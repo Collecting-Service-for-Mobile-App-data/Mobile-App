@@ -1,0 +1,35 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="CordelUTE.LoginPage"
+    BackgroundColor="White">
+
+
+    
+    <StackLayout Spacing="25" Padding="30" HorizontalOptions="FillAndExpand"
+    VerticalOptions="CenterAndExpand">
+    
+    <HorizontalStackLayout>
+        <Button Text="&#x3C;" FontSize="Large" Clicked="OnBackButtonClicked" HorizontalOptions="Start" VerticalOptions="Start"
+            BackgroundColor="Orange" />
+        <Image Source="cordel_logo.png" HorizontalOptions="Center" HeightRequest="50" />
+    </HorizontalStackLayout>
+
+        <Label Text="Login" FontSize="Large" HorizontalOptions="Center" />
+
+        <!-- Email entry -->
+        <Entry Placeholder="Email" Keyboard="Email" />
+
+        <!-- Password entry -->
+        <Entry Placeholder="Password" IsPassword="True" />
+
+        <!-- Forgot password -->
+        <Label Text="Forgot password?" HorizontalOptions="End" TextColor="Gray" />
+
+        <!-- Login button -->
+        <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10" />
+
+        <!-- Sign up button -->
+        <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent" />
+
+    </StackLayout>
+</ContentPage>

@@ -2,17 +2,17 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
-
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
-	void OnButtonClicked(object sender, EventArgs args)
+	private async void GoToLoginClicked(object sender, EventArgs e)
 	{
-		count++;
-		((Button)sender).Text = $"You clicked {count} times.";
+		// Use absolute routing for Shell navigation
+		await Shell.Current.GoToAsync("//LoginPage");
 	}
+
 }
+
 
