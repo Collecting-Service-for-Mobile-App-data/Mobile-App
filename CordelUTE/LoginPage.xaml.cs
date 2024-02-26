@@ -14,5 +14,11 @@ namespace CordelUTE
             // Navigate back to the previous page (usually the MainPage)
             await Shell.Current.GoToAsync("//MainPage");
         }
+
+        private async void SignupClicked(object sender, EventArgs e)
+        {
+            // Navigate back to the previous page (usually the MainPage)
+            await Shell.Current.GoToAsync("//SignupPage");
+        }
     }
 }

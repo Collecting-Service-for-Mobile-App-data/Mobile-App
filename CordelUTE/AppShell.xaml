@@ -19,4 +19,9 @@
         Title="Login"
         Route="LoginPage"
         ContentTemplate="{DataTemplate local:LoginPage}" />
+
+    <ShellContent
+        Title="Signup"
+        Route="SignupPage"
+        ContentTemplate="{DataTemplate local:SignupPage}" />
 </Shell>

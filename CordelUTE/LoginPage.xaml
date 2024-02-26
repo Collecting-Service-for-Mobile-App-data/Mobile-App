@@ -34,7 +34,7 @@
         <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10" />
 
         <!-- Sign up button -->
-        <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent" />
+        <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent" Clicked="SignupClicked"/>
 
     </StackLayout>
 </ContentPage>
