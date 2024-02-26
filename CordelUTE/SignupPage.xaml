@@ -1,0 +1,38 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="CordelUTE.SignupPage"
+    BackgroundColor="White">
+
+    <StackLayout Spacing="25" Padding="30" HorizontalOptions="FillAndExpand"
+    VerticalOptions="CenterAndExpand">
+    
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Text="&#x3C;" FontSize="Large" Clicked="OnBackButtonClicked"
+                BackgroundColor="Orange" VerticalOptions="Start" HorizontalOptions="Start" />
+            <Image Grid.Column="1" Source="cordel_logo.png" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="50" />
+        </Grid>
+
+        <Label Text="Sign Up" FontSize="Large" HorizontalOptions="Center" />
+
+        <!-- Company entry -->
+        <Entry Placeholder="Company" Keyboard="Default" />
+
+        <!-- Email entry -->
+        <Entry Placeholder="Email" Keyboard="Email" />
+
+        <!-- Password entry -->
+        <Entry Placeholder="Password" IsPassword="True" />
+
+        <!-- Confirm Password entry -->
+        <Entry Placeholder="Confirm Password" IsPassword="True" />
+
+        <!-- Sign up button -->
+        <Button Text="SIGN UP" BackgroundColor="Orange" TextColor="White" CornerRadius="10" />
+
+    </StackLayout>
+</ContentPage>

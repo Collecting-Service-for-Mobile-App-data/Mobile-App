@@ -7,9 +7,21 @@
     Shell.FlyoutBehavior="Disabled"
     Title="CordelUTE">
 
+    <!-- MainPage registration -->
+      
     <ShellContent
-        Title="Home"
+        Icon="cordel_logo.png"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <!-- LoginPage registration -->
+    <ShellContent
+        Title="Login"
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate local:LoginPage}" />
+
+    <ShellContent
+        Title="Signup"
+        Route="SignupPage"
+        ContentTemplate="{DataTemplate local:SignupPage}" />
 </Shell>
