@@ -20,19 +20,19 @@
         <Label Text="Sign Up" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- Company entry -->
-        <Entry Placeholder="Company" Keyboard="Default" />
+        <Entry x:Name="CompanyEntry" Placeholder="Company" Keyboard="Default" />
 
         <!-- Email entry -->
-        <Entry Placeholder="Email" Keyboard="Email" />
+        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
 
         <!-- Password entry -->
-        <Entry Placeholder="Password" IsPassword="True" />
+        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
 
         <!-- Confirm Password entry -->
-        <Entry Placeholder="Confirm Password" IsPassword="True" />
+        <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
 
         <!-- Sign up button -->
-        <Button Text="SIGN UP" BackgroundColor="Orange" TextColor="White" CornerRadius="10" />
+        <Button x:Name="SignupButton" Text="SIGN UP" BackgroundColor="Orange" TextColor="White" CornerRadius="10" Clicked="OnSignupButtonClicked" />
 
     </StackLayout>
 </ContentPage>

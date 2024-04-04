@@ -22,16 +22,16 @@
         <Label Text="Login" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- Email entry -->
-        <Entry Placeholder="Email" Keyboard="Email" />
+        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" Text="{Binding Email}"/>
 
         <!-- Password entry -->
-        <Entry Placeholder="Password" IsPassword="True" />
+        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password}"/>
 
         <!-- Forgot password -->
         <Label Text="Forgot password?" HorizontalOptions="End" TextColor="Gray" />
 
         <!-- Login button -->
-        <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10" />
+        <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10" Command="{Binding LoginCommand}" Clicked="OnLoginButtonClicked"/>
 
         <!-- Sign up button -->
         <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent" Clicked="SignupClicked"/>
