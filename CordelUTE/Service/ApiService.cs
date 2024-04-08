@@ -22,7 +22,7 @@ public class ApiService
     {
         var jsonRequest = JsonSerializer.Serialize(request);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync($"{_baseUrl}/authenticate", content);
+        var response = await _httpClient.PostAsync($"{_baseUrl}/api/user/authenticate", content);
 
         if (response.IsSuccessStatusCode)
         {
