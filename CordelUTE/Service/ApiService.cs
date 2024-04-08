@@ -10,7 +10,7 @@ namespace MauiApp1;
 public class ApiService
 {
     private readonly HttpClient _httpClient = new HttpClient();
-    private readonly string _baseUrl = "http://localhost:8080";
+    private readonly string _baseUrl = "http://127.0.0.1:8080";
 
     public ApiService()
     {
@@ -18,7 +18,7 @@ public class ApiService
         // For example, setting up headers that are common to all requests.
     }
 
-    public async Task<string> LoginAsync(LoginRequest request)
+    public async Task<(string token, string errorMessage)> LoginAsync(LoginRequest request)
     {
         var jsonRequest = JsonSerializer.Serialize(request);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
@@ -28,14 +28,18 @@ public class ApiService
         {
             var jsonResponse = await response.Content.ReadAsStringAsync();
             // Assuming the response contains the JWT token directly or an object that can be deserialized to get the token.
-            return jsonResponse;
+            return (jsonResponse, null); // Return the token and null for errorMessage when successful
         }
         else
         {
-            // Optionally log or handle the error response here.
-            return null;
+            // Read the response body for the error message
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            // Return null for token and the actual error message when the request fails
+            return (null, errorMessage);
         }
     }
+
+    
 
     public async Task<bool> SignupAsync(SignupRequest request)
     {
