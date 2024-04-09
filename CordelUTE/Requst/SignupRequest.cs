@@ -1,12 +1,13 @@
 using System;
+using MauiApp1;
 
 namespace CordelUTE
 {
     public class SignupRequest
     {
-        public string Company { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public Company company { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
 
        
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +22,8 @@ public class ApiService
     public async Task<(string token, string errorMessage)> LoginAsync(LoginRequest request)
     {
         var jsonRequest = JsonSerializer.Serialize(request);
+        Console.WriteLine(request);
+        Console.WriteLine(jsonRequest);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
         var response = await _httpClient.PostAsync($"{_baseUrl}/api/user/authenticate", content);
 
@@ -48,7 +51,7 @@ public class ApiService
             var jsonRequest = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
             // Adjust the URL if your signup endpoint is different.
-            var response = await _httpClient.PostAsync($"{_baseUrl}/", content);
+            var response = await _httpClient.PostAsync($"{_baseUrl}/api/user", content);
 
             return response.IsSuccessStatusCode;
         }
@@ -58,5 +61,23 @@ public class ApiService
             Console.WriteLine($"An exception occurred during signup: {ex.Message}");
             return false;
         }
+    }
+
+    public async Task<List<Company>> GetCompaniesAsync() {
+        List<Company> companies = new List<Company>();
+        try {
+            var response = await _httpClient.GetAsync($"{_baseUrl}/api/company/companies");
+            if(response.StatusCode == HttpStatusCode.OK) {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                companies = JsonSerializer.Deserialize<List<Company>>(responseContent);
+            }
+            else {
+                Console.WriteLine(response.StatusCode.ToString());
+            }
+        }
+        catch(Exception e) {
+            Console.WriteLine(e);
+        }
+        return companies;
     }
 }

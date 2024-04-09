@@ -8,6 +8,10 @@
     Title="CordelUTE">
 
     <!-- MainPage registration -->
+    <ShellContent
+        Title="Login"
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate local:LoginPage}" />
       
     <ShellContent
         Icon="cordel_logo.png"
@@ -15,10 +19,6 @@
         Route="MainPage" />
 
     <!-- LoginPage registration -->
-    <ShellContent
-        Title="Login"
-        Route="LoginPage"
-        ContentTemplate="{DataTemplate local:LoginPage}" />
 
     <ShellContent
         Title="Signup"

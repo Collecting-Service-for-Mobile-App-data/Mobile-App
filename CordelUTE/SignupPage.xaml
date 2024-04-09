@@ -20,7 +20,16 @@
         <Label Text="Sign Up" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- Company entry -->
-        <Entry x:Name="CompanyEntry" Placeholder="Company" Keyboard="Default" />
+        <StackLayout>
+            <Entry x:Name="CompanyEntry" Placeholder="Company" TextChanged="CompanyEntry_TextChanged"/>
+            <ListView x:Name="CompanyListView" IsVisible="False" ItemSelected="CompanyListView_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
 
         <!-- Email entry -->
         <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />

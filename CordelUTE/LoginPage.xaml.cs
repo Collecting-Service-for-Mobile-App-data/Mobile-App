@@ -16,8 +16,8 @@ namespace CordelUTE
 {
     var loginRequest = new LoginRequest
     {
-        Email = EmailEntry.Text,
-        Password = PasswordEntry.Text
+        email = EmailEntry.Text,
+        password = PasswordEntry.Text
     };
 
     // Call LoginAsync and receive both token and error message

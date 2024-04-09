@@ -8,9 +8,20 @@ namespace CordelUTE
     public partial class SignupPage : ContentPage
     {
         private ApiService _apiService = new ApiService();
+
+        private List<Company> companies = new List<Company>();
+
+        private Company SelectedCompany;
         public SignupPage()
         {
             InitializeComponent();
+            InitializeCompany();
+
+        }
+
+        private async void InitializeCompany()
+        {
+            companies = await _apiService.GetCompaniesAsync();
         }
 
         private async void OnSignupButtonClicked(object sender, EventArgs e)
@@ -26,12 +37,13 @@ namespace CordelUTE
 
             var signupRequest = new SignupRequest
             {
-                Company = CompanyEntry.Text,
-                Email = EmailEntry.Text,
-                Password = PasswordEntry.Text,
-                // Add any other required fields
+                company = SelectedCompany,
+                email = EmailEntry.Text,
+                password = PasswordEntry.Text,
+
+                
             };
-            
+
             // Assuming _apiService.SignupAsync(signupRequest) exists and works similarly to LoginAsync
             var isSuccess = await _apiService.SignupAsync(signupRequest);
             if (isSuccess)
@@ -52,6 +64,24 @@ namespace CordelUTE
         {
             // Navigate back to the previous page, using the correct route name as defined in your AppShell.xaml
             await Shell.Current.GoToAsync("//LoginPage"); // ".." navigates one level up in the navigation stack
+        }
+
+        private void CompanyEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchText = e.NewTextValue.ToLower();
+            var filteredCompanies = companies.Where(c => c.name.ToLower().Contains(searchText)).ToList();
+            CompanyListView.ItemsSource = filteredCompanies;
+            CompanyListView.IsVisible = filteredCompanies.Any();
+        }
+
+        private void CompanyListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Company selectedCompany)
+            {
+                CompanyEntry.Text = selectedCompany.name;
+                SelectedCompany = selectedCompany;
+                CompanyListView.IsVisible = false;
+            }
         }
     }
 }
