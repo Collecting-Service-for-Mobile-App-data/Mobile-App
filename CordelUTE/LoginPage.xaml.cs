@@ -26,8 +26,9 @@ namespace CordelUTE
     if (!string.IsNullOrEmpty(token))
     {
         // Handle success
-        await SecureStorage.SetAsync("jwtToken", token);
         await Shell.Current.GoToAsync("//MainPage");
+        Console.WriteLine(token);
+        await SecureStorage.SetAsync("jwtToken", token);
     }
     else
     {
