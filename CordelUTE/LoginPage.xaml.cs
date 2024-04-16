@@ -37,28 +37,10 @@ namespace CordelUTE
                 await DisplayAlert("Login Failed", "Please check your credentials and try again.", "OK");
             }
         }
-        public bool DeviceCheck()
-        {
-            // Use DeviceInfo to get the current platform
-            var currentPlatform = DeviceInfo.Platform;
-
-            if (currentPlatform == DevicePlatform.iOS)
-            {
-                return true; // Return true for iOS
-            }
-            else if (currentPlatform == DevicePlatform.Android)
-            {
-                return false; // Return false for Android
-            }
-            else
-            {
-                // Optionally handle other platforms or default case
-                return false;
-            }
-        }
 
         private void OnPrintDeviceInfoClicked(object sender, EventArgs e)
         {
+            SQLService sQLService = new SQLService();
             // Get device model and manufacturer
             string deviceModel = DeviceInfo.Model;
             string deviceManufacturer = DeviceInfo.Manufacturer;
@@ -68,7 +50,7 @@ namespace CordelUTE
             Console.WriteLine($"Device Model: {deviceModel}");
             Console.WriteLine($"Device Manufacturer: {deviceManufacturer}");
             Console.WriteLine($"Device Name: {deviceName}");
-            Console.WriteLine(DeviceCheck());
+            Console.WriteLine(sQLService.DeviceCheck());
         }
 
 
