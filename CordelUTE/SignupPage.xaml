@@ -4,25 +4,28 @@
     BackgroundColor="White">
 
     <StackLayout Spacing="25" Padding="30" HorizontalOptions="FillAndExpand"
-    VerticalOptions="CenterAndExpand">
-    
+        VerticalOptions="CenterAndExpand">
+
         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Text="&#x3C;" FontSize="Large" Clicked="OnBackButtonClicked"
                 BackgroundColor="Orange" VerticalOptions="Start" HorizontalOptions="Start" />
-            <Image Grid.Column="1" Source="cordel_logo.png" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="50" />
+            <Image Grid.Column="1" Source="cordel_logo.png" HorizontalOptions="Center"
+                VerticalOptions="Start" HeightRequest="50" />
         </Grid>
 
         <Label Text="Sign Up" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- Company entry -->
         <StackLayout>
-            <Entry x:Name="CompanyEntry" Placeholder="Company" TextChanged="CompanyEntry_TextChanged"/>
-            <ListView x:Name="CompanyListView" IsVisible="False" ItemSelected="CompanyListView_ItemSelected">
+            <Entry x:Name="CompanyEntry" Placeholder="Company"
+                TextChanged="CompanyEntry_TextChanged" />
+            <ListView x:Name="CompanyListView" IsVisible="False"
+                ItemSelected="CompanyListView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding name}" />
@@ -41,7 +44,8 @@
         <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
 
         <!-- Sign up button -->
-        <Button x:Name="SignupButton" Text="SIGN UP" BackgroundColor="Orange" TextColor="White" CornerRadius="10" Clicked="OnSignupButtonClicked" />
+        <Button x:Name="SignupButton" Text="SIGN UP" BackgroundColor="Orange" TextColor="White"
+            CornerRadius="10" Clicked="OnSignupButtonClicked" />
 
     </StackLayout>
 </ContentPage>

@@ -3,35 +3,41 @@
     x:Class="CordelUTE.LoginPage"
     BackgroundColor="White">
 
-
-    
     <StackLayout Spacing="25" Padding="30" HorizontalOptions="FillAndExpand"
-    VerticalOptions="CenterAndExpand">
-    
-    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Image Grid.Column="2" Source="cordel_logo.png" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="50" />
-    </Grid>
+        VerticalOptions="CenterAndExpand">
+
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="2" Source="cordel_logo.png" HorizontalOptions="Center"
+                VerticalOptions="Start" HeightRequest="50" />
+        </Grid>
 
         <Label Text="Login" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- Email entry -->
-        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" Text="{Binding Email}"/>
+        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" Text="{Binding Email}" />
 
         <!-- Password entry -->
-        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password}"/>
+        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True"
+            Text="{Binding Password}" />
 
         <!-- Forgot password -->
         <Label Text="Forgot password?" HorizontalOptions="End" TextColor="Gray" />
 
         <!-- Login button -->
-        <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10" Command="{Binding LoginCommand}" Clicked="OnLoginButtonClicked"/>
+        <Button Text="LOGIN" BackgroundColor="Orange" TextColor="White" CornerRadius="10"
+            Command="{Binding LoginCommand}" Clicked="OnLoginButtonClicked" />
 
         <!-- Sign up button -->
-        <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent" Clicked="SignupClicked"/>
+        <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent"
+            Clicked="SignupClicked" />
+
+        <Button Text="Print Device Info" BackgroundColor="Orange" TextColor="White"
+            Clicked="OnPrintDeviceInfoClicked" />
+
 
     </StackLayout>
 </ContentPage>
