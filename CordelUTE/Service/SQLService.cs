@@ -1,15 +1,21 @@
+using System.Data.SQlite;
+using Microsoft.Maui.Devices;
 namespace MauiApp1;
 
-public class SQLService : ContentView
+
+public class SQLService
 {
 	public SQLService()
 	{
-		Content = new VerticalStackLayout
-		{
-			Children = {
-				new Label { HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Text = "Welcome to .NET MAUI!"
-				}
-			}
-		};
+		
+	}	
+
+	private bool DeviceCheck() {
+		if (Device.RuntimePlatform == DevicePlatform.iOS){
+			return true;
+		}
+		else if (Device.RuntimePlatform == DevicePlatform.Android){
+			return false;
+		}
 	}
 }
