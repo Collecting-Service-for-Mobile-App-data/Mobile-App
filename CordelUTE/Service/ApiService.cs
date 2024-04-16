@@ -11,7 +11,7 @@ namespace MauiApp1;
 public class ApiService
 {
     private readonly HttpClient _httpClient = new HttpClient();
-    private readonly string _baseUrl = "http://127.0.0.1:8080";
+    private readonly string _baseUrl = "http://129.241.153.179:8080";
 
     public ApiService()
     {

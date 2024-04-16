@@ -1,6 +1,12 @@
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.ApplicationModel;
-
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using CordelUTE;
+using System.Net;
+using System.Net.Http;
 
 namespace MauiApp1;
 
@@ -12,23 +18,23 @@ public class SQLService
 
 	}
 
-	public bool DeviceCheck()
-	{
-		// Use DeviceInfo to get the current platform
-		var currentPlatform = DeviceInfo.Platform;
+	[DllImport("sqlite3", EntryPoint = "sqlite3_snapshot_get", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int sqlite3_snapshot_get(IntPtr db, string zSchema, out IntPtr ppSnapshot);
 
-		if (currentPlatform == DevicePlatform.iOS)
-		{
-			return true; // Return true for iOS
+	[DllImport("sqlite3", EntryPoint = "sqlite3_open", CallingConvention = CallingConvention.Cdecl)]
+	public static extern int sqlite3_open(char filename, sqlite3 ppDb)
+
+
+	public async Task getSQLiteFile() {
+		var currentPlatform = DeviceInfo.Platform;
+		if(currentPlatform == DevicePlatform.iOS) {
+			sqlite3_snapshot_get();
+
 		}
-		else if (currentPlatform == DevicePlatform.Android)
-		{
-			return false; // Return false for Android
-		}
-		else
-		{
-			// Optionally handle other platforms or default case
-			return false;
+		else if(currentPlatform == DevicePlatform.Android) {
+			sqlite3_snapshot_get();
 		}
 	}
+
+
 }
