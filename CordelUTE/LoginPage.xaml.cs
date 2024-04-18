@@ -41,16 +41,13 @@ namespace CordelUTE
         private void OnPrintDeviceInfoClicked(object sender, EventArgs e)
         {
             SQLService sQLService = new SQLService();
-            // Get device model and manufacturer
-            string deviceModel = DeviceInfo.Model;
-            string deviceManufacturer = DeviceInfo.Manufacturer;
-            string deviceName = DeviceInfo.Name;  // Gets the device name set by the user.
 
             // Print device information to the console
-            Console.WriteLine($"Device Model: {deviceModel}");
-            Console.WriteLine($"Device Manufacturer: {deviceManufacturer}");
-            Console.WriteLine($"Device Name: {deviceName}");
-            Console.WriteLine(sQLService.DeviceCheck());
+            //Console.WriteLine($"Device Model: {deviceModel}");
+            //Console.WriteLine($"Device Manufacturer: {deviceManufacturer}");
+            //Console.WriteLine($"Device Name: {deviceName}");
+            sQLService.InitializeDatabase();
+            sQLService.GetPath();
         }
 
 
