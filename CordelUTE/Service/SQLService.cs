@@ -47,7 +47,7 @@ public class SQLService
 		else if(currentPlatform == DevicePlatform.Android) {
 			sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, databaseName);
 		}
-		Console.WriteLine($"databse = {sqlitedbpath}");
+		Console.WriteLine($"database = {sqlitedbpath}");
 		return sqlitedbpath;
 	}
 
