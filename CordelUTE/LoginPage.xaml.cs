@@ -46,8 +46,11 @@ namespace CordelUTE
             //Console.WriteLine($"Device Model: {deviceModel}");
             //Console.WriteLine($"Device Manufacturer: {deviceManufacturer}");
             //Console.WriteLine($"Device Name: {deviceName}");
-            sQLService.InitializeDatabase();
-            sQLService.GetPath();
+            //sQLService.InitializeDatabase();
+            //sQLService.GetPath();
+
+            string connectionString = $"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db;";
+            sQLService.OpenConnection(connectionString);
         }
 
 

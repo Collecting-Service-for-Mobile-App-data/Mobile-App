@@ -66,4 +66,10 @@
 	  <Folder Include="ViewModel/" />
 	</ItemGroup>
 
+	<ItemGroup>
+	<None Update="lib\sqlite3.dll">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	</ItemGroup>
+
 </Project>
