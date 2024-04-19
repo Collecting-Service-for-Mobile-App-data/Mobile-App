@@ -50,7 +50,7 @@ namespace CordelUTE
             //sQLService.GetPath();
 
             string connectionString = $"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db;";
-            sQLService.OpenConnection(connectionString);
+            sQLService.ConfigureDatabase();
         }
 
 

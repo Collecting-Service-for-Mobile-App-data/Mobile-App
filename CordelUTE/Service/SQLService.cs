@@ -13,16 +13,29 @@ namespace MauiApp1
         public SQLService() {}
 
         // Open and configure the database
-        public void ConfigureDatabase()
-        {
-            using (var connection = OpenConnection($"Data Source={DbPath}"))
-            {
-                SetWalMode(connection);
-            }
-        }
+		public void ConfigureDatabase()
+		{
+			using (var connection = OpenConnection($"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db"))
+			{
+				SetWalMode(connection);
+				//CopyDatabase();
+				CloseWalMode(connection);
+				connection.Close();
+
+			}
+		}
+
+		private void CopyDatabase() {
+			try {
+				File.Copy("Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db","../DatabaseTempFile",true);
+			}
+			catch(IOException ioEx) {
+				Console.WriteLine("Error copying database: " + ioEx.Message);
+			}
+		}
 
         // Open the database connection
-		public SqliteConnection OpenConnection(string connectionString)
+		private SqliteConnection OpenConnection(string connectionString)
 		{
 			var connection = new SqliteConnection(connectionString);
 			try
@@ -46,14 +59,38 @@ namespace MauiApp1
 
 
         // Set Write-Ahead Logging mode
-        private void SetWalMode(SqliteConnection connection)
-        {
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "PRAGMA journal_mode=WAL;";
-                command.ExecuteNonQuery();
-            }
-        }
+		private void SetWalMode(SqliteConnection connection)
+		{
+			using (var command = connection.CreateCommand())
+			{
+				command.CommandText = "PRAGMA journal_mode=WAL;";
+			}
+		}
+
+		private void CloseWalMode(SqliteConnection connection) {
+			using (var command = connection.CreateCommand()) {
+				command.CommandText ="PRAGMA journal_mode=DELET;";
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Get the path to the database based on the platform
         public string GetPath()
