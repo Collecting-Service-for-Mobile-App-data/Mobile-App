@@ -18,16 +18,18 @@ namespace MauiApp1
 			using (var connection = OpenConnection($"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db"))
 			{
 				SetWalMode(connection);
-				//CopyDatabase();
+				CopyDatabase();
 				CloseWalMode(connection);
 				connection.Close();
-
 			}
 		}
 
 		private void CopyDatabase() {
 			try {
-				File.Copy("Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db","../DatabaseTempFile",true);
+				string sourceFile = "C:\\Users\\Ole Kristian\\Desktop\\database.db";
+				string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
+				string destinationFile = Path.GetFullPath(destinationPath);
+				File.Copy(sourceFile, destinationFile, true);
 			}
 			catch(IOException ioEx) {
 				Console.WriteLine("Error copying database: " + ioEx.Message);
@@ -63,13 +65,26 @@ namespace MauiApp1
 		{
 			using (var command = connection.CreateCommand())
 			{
+				// Set the journal_mode to WAL
 				command.CommandText = "PRAGMA journal_mode=WAL;";
+				var result = command.ExecuteScalar().ToString();
+
+				// Optionally, you can check if the setting was successful
+				if (!result.Equals("wal", StringComparison.OrdinalIgnoreCase))
+				{
+					throw new InvalidOperationException("Failed to set journal_mode to WAL.");
+				}
 			}
 		}
 
 		private void CloseWalMode(SqliteConnection connection) {
+			using (var checkpointCommand = new SqliteCommand("PRAGMA wal_checkpoint(FULL);", connection))
+            {
+                checkpointCommand.ExecuteNonQuery();
+            }
 			using (var command = connection.CreateCommand()) {
 				command.CommandText ="PRAGMA journal_mode=DELET;";
+				command.ExecuteNonQuery();
 			}
 		}
 
