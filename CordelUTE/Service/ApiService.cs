@@ -11,34 +11,31 @@ namespace MauiApp1;
 public class ApiService
 {
     private readonly HttpClient _httpClient = new HttpClient();
-    private readonly string _baseUrl = "http://129.241.153.179:8080";
+    private readonly string _baseUrl = "http://localhost:8080";
 
     public ApiService()
     {
-        // If you have any initialization logic, it can go here.
-        // For example, setting up headers that are common to all requests.
+
     }
 
-    public async Task<(string token, string errorMessage)> LoginAsync(LoginRequest request)
+    public async Task<(bool isLogIn, string errorMessage)> LoginAsync(LoginRequest request)
     {
         var jsonRequest = JsonSerializer.Serialize(request);
-        Console.WriteLine(request);
-        Console.WriteLine(jsonRequest);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
         var response = await _httpClient.PostAsync($"{_baseUrl}/api/user/authenticate", content);
 
         if (response.IsSuccessStatusCode)
         {
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            // Assuming the response contains the JWT token directly or an object that can be deserialized to get the token.
-            return (jsonResponse, null); // Return the token and null for errorMessage when successful
+            var parsedJson = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
+            var token = parsedJson["jwt"];
+            await SecureStorage.Default.SetAsync("jwt", token);
+            return (true, null);
         }
         else
         {
-            // Read the response body for the error message
             var errorMessage = await response.Content.ReadAsStringAsync();
-            // Return null for token and the actual error message when the request fails
-            return (null, errorMessage);
+            return (false, errorMessage);
         }
     }
 
@@ -50,7 +47,6 @@ public class ApiService
         {
             var jsonRequest = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-            // Adjust the URL if your signup endpoint is different.
             var response = await _httpClient.PostAsync($"{_baseUrl}/api/user", content);
 
             return response.IsSuccessStatusCode;

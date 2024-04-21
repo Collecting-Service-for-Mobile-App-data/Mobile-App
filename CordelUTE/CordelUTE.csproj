@@ -64,6 +64,7 @@
 
 	<ItemGroup>
 	  <Folder Include="DatabaseTempFiles\" />
+	  <Folder Include="Database\" />
 	  <Folder Include="ViewModel/" />
 	</ItemGroup>
 

@@ -19,21 +19,15 @@ namespace CordelUTE
                 email = EmailEntry.Text,
                 password = PasswordEntry.Text
             };
+            var (isLogIn, errorMessage) = await _apiService.LoginAsync(loginRequest);
 
-            // Call LoginAsync and receive both token and error message
-            var (token, errorMessage) = await _apiService.LoginAsync(loginRequest);
-
-            if (!string.IsNullOrEmpty(token))
+            if (isLogIn)
             {
-                // Handle success
                 await Shell.Current.GoToAsync("//MainPage");
-                Console.WriteLine(token);
-                await SecureStorage.SetAsync("jwtToken", token);
             }
             else
             {
-                // Handle failure and print the error message
-                Console.WriteLine(errorMessage); // Print the error message to the console
+                Console.WriteLine(errorMessage);
                 await DisplayAlert("Login Failed", "Please check your credentials and try again.", "OK");
             }
         }
@@ -41,15 +35,6 @@ namespace CordelUTE
         private void OnPrintDeviceInfoClicked(object sender, EventArgs e)
         {
             SQLService sQLService = new SQLService();
-
-            // Print device information to the console
-            //Console.WriteLine($"Device Model: {deviceModel}");
-            //Console.WriteLine($"Device Manufacturer: {deviceManufacturer}");
-            //Console.WriteLine($"Device Name: {deviceName}");
-            //sQLService.InitializeDatabase();
-            //sQLService.GetPath();
-
-            string connectionString = $"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db;";
             sQLService.ConfigureDatabase();
         }
 

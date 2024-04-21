@@ -1,34 +1,64 @@
 using Microsoft.Data.Sqlite;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace MauiApp1
 {
     public class SQLService
     {
-        public static string DbFileName = "SampleDatabase.db";
-        public static string DbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DbFileName);
+        public static string dbFileName = "database.db";
 
         // Default constructor
         public SQLService() {}
 
         // Open and configure the database
-		public void ConfigureDatabase()
+		public async Task ConfigureDatabase()
 		{
-			using (var connection = OpenConnection($"Data Source=C:\\Users\\Ole Kristian\\Desktop\\database.db"))
+			string mainDatabase = $"Data Source=" + GetPathToDatabase() + "\\database.db";
+			var connection = OpenConnection(mainDatabase);
 			{
-				SetWalMode(connection);
-				CopyDatabase();
-				CloseWalMode(connection);
-				connection.Close();
+				try {
+					await SetWalMode(connection);
+					CloseConnection(connection);
+					await TestEdditDatabase();
+					await CopyDatabase();
+					connection = OpenConnection(mainDatabase);
+					await CloseWalModeAndSaveChanges(connection);
+				}
+				catch(Exception e){
+					Console.WriteLine(e);
+				}
+				finally {
+					CloseConnection(connection);
+				}
 			}
+			await ConfigCopyDatabase();
 		}
 
-		private void CopyDatabase() {
+		//Config the copy data to not be inn wal mode
+		private async Task ConfigCopyDatabase() {
+			string copyDatabase = $"Data Source=" + GetPathToCopyDatabase() + "\\database.db";
+			var connection = OpenConnection(copyDatabase);
+			{
+				try {
+					await ColseWalModeAndNotSaveChanges(connection);
+				}
+				catch(Exception e) {
+					Console.WriteLine(e);
+				}
+				finally {
+					CloseConnection(connection);
+				}
+			}
+
+		}
+
+		//Copy a database file
+		private async Task CopyDatabase() {
 			try {
-				string sourceFile = "C:\\Users\\Ole Kristian\\Desktop\\database.db";
-				string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
-				string destinationFile = Path.GetFullPath(destinationPath);
+				string sourceFile = GetPathToDatabase() + "\\database.db";
+				string destinationFile = GetPathToCopyDatabase() + "\\database.db";
 				File.Copy(sourceFile, destinationFile, true);
 			}
 			catch(IOException ioEx) {
@@ -39,6 +69,7 @@ namespace MauiApp1
         // Open the database connection
 		private SqliteConnection OpenConnection(string connectionString)
 		{
+			Console.WriteLine(connectionString);
 			var connection = new SqliteConnection(connectionString);
 			try
 			{
@@ -61,44 +92,96 @@ namespace MauiApp1
 
 
         // Set Write-Ahead Logging mode
-		private void SetWalMode(SqliteConnection connection)
+		private async Task SetWalMode(SqliteConnection connection)
 		{
-			using (var command = connection.CreateCommand())
+			await Task.Run(() =>
 			{
-				// Set the journal_mode to WAL
-				command.CommandText = "PRAGMA journal_mode=WAL;";
-				var result = command.ExecuteScalar().ToString();
-
-				// Optionally, you can check if the setting was successful
-				if (!result.Equals("wal", StringComparison.OrdinalIgnoreCase))
+				using (var command = connection.CreateCommand())
 				{
-					throw new InvalidOperationException("Failed to set journal_mode to WAL.");
+					command.CommandText = "PRAGMA journal_mode=WAL;";
+					var result = command.ExecuteScalar().ToString();
+					if (!result.Equals("wal", StringComparison.OrdinalIgnoreCase))
+					{
+						throw new InvalidOperationException("Failed to set journal_mode to WAL.");
+					}
+				}
+			});
+		}
+		
+		//Merge the wal file and main database file.
+		//Closes wal mode
+		private async Task CloseWalModeAndSaveChanges(SqliteConnection connection)
+		{
+			await Task.Run(() =>
+			{
+				using (var checkpointCommand = new SqliteCommand("PRAGMA wal_checkpoint(FULL);", connection))
+				{
+					checkpointCommand.ExecuteNonQuery();
+				}
+				using (var command = connection.CreateCommand())
+				{
+					command.CommandText = "PRAGMA journal_mode=DELETE;";
+					command.ExecuteNonQuery();
+				}
+			});
+		}
+
+		//Closes wal mode without merging the wal file and main database file.
+		private async Task ColseWalModeAndNotSaveChanges(SqliteConnection connection) {
+			await Task.Run(() => {
+				using (var command = connection.CreateCommand()) {
+					command.CommandText = "PRAGMA journal_mode=DELETE;";
+					command.ExecuteNonQuery();
+				}
+			});
+		}
+
+		//Closes connection to a database
+		private void CloseConnection(SqliteConnection connection) {
+			connection.Close();
+		}
+
+		//Test method to add a table to a database
+		private async Task TestEdditDatabase() {
+			string mainDatabase = $"Data Source=" + GetPathToDatabase() + "\\database.db";
+			using (var connection = OpenConnection(mainDatabase))
+    		{
+				var command = connection.CreateCommand();
+				command.CommandText = @"CREATE TABLE IF NOT EXISTS MyTable (
+										Id INTEGER PRIMARY KEY,
+										Name TEXT NOT NULL,
+										Email TEXT NOT NULL
+									);";
+
+				try
+				{
+					command.ExecuteNonQuery();
+					Console.WriteLine("Table 'MyTable' checked/created successfully.");
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"Failed to create/check table 'MyTable': {ex.Message}");
 				}
 			}
 		}
 
-		private void CloseWalMode(SqliteConnection connection) {
-			using (var checkpointCommand = new SqliteCommand("PRAGMA wal_checkpoint(FULL);", connection))
-            {
-                checkpointCommand.ExecuteNonQuery();
-            }
-			using (var command = connection.CreateCommand()) {
-				command.CommandText ="PRAGMA journal_mode=DELET;";
-				command.ExecuteNonQuery();
-			}
+		//Delete a file
+		private void DelteFile() {
+
+			string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
+			string destinationFile = Path.GetFullPath(destinationPath);
+			File.Delete(destinationFile);
 		}
 
+		//Return the path to the main database file
+		private string GetPathToDatabase() {
+			return Directory.GetCurrentDirectory() + "\\CordelUTE\\Database";
+		}
 
-
-
-
-
-
-
-
-
-
-
+		//Return the path to the copy database file
+		private string GetPathToCopyDatabase() {
+			return Directory.GetCurrentDirectory() + "\\CordelUTE\\DatabaseTempFiles";
+		}
 
 
 
@@ -108,24 +191,71 @@ namespace MauiApp1
 
 
         // Get the path to the database based on the platform
+		// 
         public string GetPath()
         {
             var currentPlatform = DeviceInfo.Platform;
             string sqlitedbpath = "";
             if (currentPlatform == DevicePlatform.iOS)
             {
-                sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", DbFileName);
+                //sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
             }
             else if (currentPlatform == DevicePlatform.Android)
             {
-                sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, DbFileName);
+                //sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
             }
             else
             {
-                sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, DbFileName);
+				string rootPath = @"C:\"; // Starting directory
+				string searchPattern = dbFileName; // The name of the file to search for
+
+				List<string> foundFiles = new List<string>();
+				SearchFiles(rootPath, searchPattern, foundFiles);
+
+				Console.WriteLine("Found files:");
+				foreach (string file in foundFiles)
+				{
+					Console.WriteLine(file);
+				}
             }
             Console.WriteLine(sqlitedbpath);
             return sqlitedbpath;
         }
+			 private void SearchFiles(string path, string searchPattern, List<string> foundFiles)
+    {
+        try
+        {
+            // Get all files in the current directory
+            string[] files = Directory.GetFiles(path, searchPattern);
+            foundFiles.AddRange(files);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine($"No access to {path}, skipping...");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred accessing {path}: {ex.Message}");
+        }
+
+        try
+        {
+            // Get all subdirectories in the current directory
+            string[] directories = Directory.GetDirectories(path);
+            foreach (string directory in directories)
+            {
+                SearchFiles(directory, searchPattern, foundFiles);
+            }
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine($"No access to subdirectories in {path}, skipping...");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred accessing subdirectories in {path}: {ex.Message}");
+        }
+    }
+		
     }
 }
