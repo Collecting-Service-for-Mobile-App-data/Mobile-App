@@ -46,7 +46,8 @@
             <Button Text="Send error message"
                 BackgroundColor="Orange"
                 TextColor="White"
-                CornerRadius="10" />
+                CornerRadius="10" 
+                Clicked="UploadFile"/>
         </StackLayout>
     </ScrollView>
 

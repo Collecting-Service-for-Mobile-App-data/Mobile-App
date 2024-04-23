@@ -15,7 +15,7 @@ namespace MauiApp1
         // Open and configure the database
 		public async Task ConfigureDatabase()
 		{
-			string mainDatabase = $"Data Source=" + GetPathToDatabase() + "\\database.db";
+			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
 			var connection = OpenConnection(mainDatabase);
 			{
 				try {
@@ -38,7 +38,7 @@ namespace MauiApp1
 
 		//Config the copy data to not be inn wal mode
 		private async Task ConfigCopyDatabase() {
-			string copyDatabase = $"Data Source=" + GetPathToCopyDatabase() + "\\database.db";
+			string copyDatabase = $"Data Source={GetPathToCopyDatabase()}\\database.db;Pooling=False";
 			var connection = OpenConnection(copyDatabase);
 			{
 				try {
@@ -139,11 +139,14 @@ namespace MauiApp1
 		//Closes connection to a database
 		private void CloseConnection(SqliteConnection connection) {
 			connection.Close();
+			if(connection.State == System.Data.ConnectionState.Closed) {
+				Console.WriteLine("Close");
+			}
 		}
 
 		//Test method to add a table to a database
 		private async Task TestEdditDatabase() {
-			string mainDatabase = $"Data Source=" + GetPathToDatabase() + "\\database.db";
+			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
 			using (var connection = OpenConnection(mainDatabase))
     		{
 				var command = connection.CreateCommand();
@@ -162,6 +165,9 @@ namespace MauiApp1
 				{
 					Console.WriteLine($"Failed to create/check table 'MyTable': {ex.Message}");
 				}
+				finally {
+					CloseConnection(connection);
+				}
 			}
 		}
 
@@ -179,7 +185,7 @@ namespace MauiApp1
 		}
 
 		//Return the path to the copy database file
-		private string GetPathToCopyDatabase() {
+		public string GetPathToCopyDatabase() {
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\DatabaseTempFiles";
 		}
 

@@ -20,10 +20,11 @@ namespace CordelUTE
                 password = PasswordEntry.Text
             };
             var (isLogIn, errorMessage) = await _apiService.LoginAsync(loginRequest);
-
             if (isLogIn)
             {
                 await Shell.Current.GoToAsync("//MainPage");
+                await _apiService.StoreUserId();
+                Console.WriteLine(SecureStorage.Default.GetAsync("useId").ToString());
             }
             else
             {
@@ -32,10 +33,9 @@ namespace CordelUTE
             }
         }
 
-        private void OnPrintDeviceInfoClicked(object sender, EventArgs e)
+        private async void OnPrintDeviceInfoClicked(object sender, EventArgs e)
         {
-            SQLService sQLService = new SQLService();
-            sQLService.ConfigureDatabase();
+            Console.WriteLine("Test");
         }
 
 
