@@ -33,13 +33,6 @@ namespace CordelUTE
             }
         }
 
-        private async void OnPrintDeviceInfoClicked(object sender, EventArgs e)
-        {
-            Console.WriteLine("Test");
-        }
-
-
-
         private async void OnBackButtonClicked(object sender, EventArgs e)
         {
             // Navigate back to the previous page (usually the MainPage)

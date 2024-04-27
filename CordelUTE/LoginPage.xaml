@@ -35,9 +35,6 @@
         <Button Text="SIGN UP" TextColor="Orange" BackgroundColor="Transparent"
             Clicked="SignupClicked" />
 
-        <Button Text="Print Device Info" BackgroundColor="Orange" TextColor="White"
-            Clicked="OnPrintDeviceInfoClicked" />
-
 
     </StackLayout>
 </ContentPage>
