@@ -1,4 +1,7 @@
 using Microsoft.Data.Sqlite;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("MauiApp1.Tests")]
 
 namespace MauiApp1
 {
@@ -52,7 +55,7 @@ namespace MauiApp1
 		}
 
 		//Copy a database file
-		private async Task CopyDatabase() {
+		internal async Task CopyDatabase() {
 			try {
 				string sourceFile = GetPathToDatabase() + "\\database.db";
 				string destinationFile = GetPathToCopyDatabase() + "\\database.db";
@@ -177,7 +180,7 @@ namespace MauiApp1
 		}
 
 		//Return the path to the main database file
-		private string GetPathToDatabase() {
+		internal string GetPathToDatabase() {
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\Database";
 		}
 
