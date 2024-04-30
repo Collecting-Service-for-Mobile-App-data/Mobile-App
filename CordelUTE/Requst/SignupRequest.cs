@@ -1,10 +1,9 @@
-using System;
 using MauiApp1;
 
 namespace CordelUTE
 {
     // Represents a signup request object used for creating a new user account.
-public class SignupRequest
+    public class SignupRequest
 {
     // The company information associated with the new user.
     public Company company { get; set; }

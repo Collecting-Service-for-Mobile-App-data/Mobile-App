@@ -1,5 +1,4 @@
 using MauiApp1;
-using Microsoft.Maui.Controls;
 
 namespace CordelUTE
 {

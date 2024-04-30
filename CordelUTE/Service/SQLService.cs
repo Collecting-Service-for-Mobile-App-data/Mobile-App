@@ -1,7 +1,4 @@
 using Microsoft.Data.Sqlite;
-using System;
-using System.IO;
-using System.Collections.Generic;
 
 namespace MauiApp1
 {
