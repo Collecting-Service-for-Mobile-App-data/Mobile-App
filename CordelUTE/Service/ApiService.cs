@@ -11,7 +11,7 @@ public class ApiService
 {
     private readonly HttpClient _httpClient; // HttpClient instance for making HTTP requests.
     private readonly string _baseUrl; // Base URL of the backend API.
-    
+
     public ApiService()
     {
         _httpClient = new HttpClient();
