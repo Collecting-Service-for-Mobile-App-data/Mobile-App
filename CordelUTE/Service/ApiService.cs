@@ -24,29 +24,18 @@ public class ApiService
         // Serialize the LoginRequest object to JSON format.
         var jsonRequest = JsonSerializer.Serialize(request);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
         // Send a POST request to the API endpoint for login.
         var response = await _httpClient.PostAsync($"{_baseUrl}/api/user/authenticate", content);
-
-        Console.WriteLine($"Login response status code: {response.StatusCode}");
-
         if (response.IsSuccessStatusCode)
         {
             // Read the response content as a string.
             var jsonResponse = await response.Content.ReadAsStringAsync();
-
             // Deserialize the JSON response into a dictionary.
             var parsedJson = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
-
             // Extract the JWT token from the response.
             var token = parsedJson["jwt"];
-            Console.WriteLine("Extracted JWT token:");
-            Console.WriteLine(token);
-
             // Store the JWT token in secure storage.
             await SecureStorage.Default.SetAsync("jwt", token);
-            Console.WriteLine("JWT token stored successfully.");
-
             return (true, null);
         }
         else
@@ -60,16 +49,14 @@ public class ApiService
     // Retrieves the user ID associated with the stored JWT token.
     public async Task StoreUserId()
     {
-        var httpClient = new HttpClient();
-
         // Retrieve the JWT token from secure storage.
         var jwtToken = await SecureStorage.Default.GetAsync("jwt");
 
         // Set the Authorization header with the Bearer token.
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
         // Send a GET request to the API endpoint for retrieving user information.
-        var response = await httpClient.GetAsync($"{_baseUrl}/api/user/sessionuser");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/api/user/sessionuser");
 
         if (response.IsSuccessStatusCode)
         {
@@ -93,13 +80,11 @@ public class ApiService
     // Uploads a file to the backend API.
     public async Task<bool> UploadFileAsync(string filePath)
     {
-        var httpClient = new HttpClient();
-
         // Retrieve the JWT token from secure storage.
         var jwtToken = await SecureStorage.Default.GetAsync("jwt");
 
         // Set the Authorization header with the Bearer token.
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
         // Get the user information (assuming `getUser` is implemented as shown).
         var user = await getUser();
@@ -125,7 +110,7 @@ public class ApiService
         multiContent.Add(fileContent, "file", Path.GetFileName(filePath));
 
         // Send a POST request to the API endpoint for file upload.
-        var response = await httpClient.PostAsync($"{_baseUrl}/api/sqlite-files/upload", multiContent);
+        var response = await _httpClient.PostAsync($"{_baseUrl}/api/sqlite-files/upload", multiContent);
 
         if (response.IsSuccessStatusCode)
         {
@@ -142,19 +127,17 @@ public class ApiService
     // Retrieves user information based on the stored user ID.
     private async Task<User> getUser()
     {
-        var httpClient = new HttpClient();
-
         // Retrieve the JWT token from secure storage.
         var jwtToken = await SecureStorage.Default.GetAsync("jwt");
 
         // Set the Authorization header with the Bearer token.
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
         // Retrieve the user ID from secure storage.
         var id = await SecureStorage.Default.GetAsync("userId");
 
         // Send a GET request to the API endpoint for retrieving user information.
-        var response = await httpClient.GetAsync($"{_baseUrl}/api/user/getuser/{id}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/api/user/getuser/{id}");
 
         if (response.IsSuccessStatusCode)
         {

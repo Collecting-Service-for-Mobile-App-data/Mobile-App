@@ -5,20 +5,21 @@ using System.Runtime.CompilerServices;
 
 namespace MauiApp1
 {
-    public class SQLService
-    {
-        public static string dbFileName = "database.db";
+	public class SQLService
+	{
+		public static string dbFileName = "database.db";
 
-        // Default constructor
-        public SQLService() {}
+		// Default constructor
+		public SQLService() { }
 
-        // Open and configure the database
+		// Open and configure the database
 		public async Task ConfigureDatabase()
 		{
 			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
 			var connection = OpenConnection(mainDatabase);
 			{
-				try {
+				try
+				{
 					await SetWalMode(connection);
 					CloseConnection(connection);
 					await TestEdditDatabase();
@@ -26,10 +27,12 @@ namespace MauiApp1
 					connection = OpenConnection(mainDatabase);
 					await CloseWalModeAndSaveChanges(connection);
 				}
-				catch(Exception e){
+				catch (Exception e)
+				{
 					Console.WriteLine(e);
 				}
-				finally {
+				finally
+				{
 					CloseConnection(connection);
 				}
 			}
@@ -37,17 +40,21 @@ namespace MauiApp1
 		}
 
 		//Config the copy data to not be inn wal mode
-		private async Task ConfigCopyDatabase() {
+		private async Task ConfigCopyDatabase()
+		{
 			string copyDatabase = $"Data Source={GetPathToCopyDatabase()}\\database.db;Pooling=False";
 			var connection = OpenConnection(copyDatabase);
 			{
-				try {
+				try
+				{
 					await ColseWalModeAndNotSaveChanges(connection);
 				}
-				catch(Exception e) {
+				catch (Exception e)
+				{
 					Console.WriteLine(e);
 				}
-				finally {
+				finally
+				{
 					CloseConnection(connection);
 				}
 			}
@@ -55,18 +62,21 @@ namespace MauiApp1
 		}
 
 		//Copy a database file
-		internal async Task CopyDatabase() {
-			try {
+		internal async Task CopyDatabase()
+		{
+			try
+			{
 				string sourceFile = GetPathToDatabase() + "\\database.db";
 				string destinationFile = GetPathToCopyDatabase() + "\\database.db";
 				File.Copy(sourceFile, destinationFile, true);
 			}
-			catch(IOException ioEx) {
+			catch (IOException ioEx)
+			{
 				Console.WriteLine("Error copying database: " + ioEx.Message);
 			}
 		}
 
-        // Open the database connection
+		// Open the database connection
 		private SqliteConnection OpenConnection(string connectionString)
 		{
 			Console.WriteLine(connectionString);
@@ -91,7 +101,7 @@ namespace MauiApp1
 		}
 
 
-        // Set Write-Ahead Logging mode
+		// Set Write-Ahead Logging mode
 		private async Task SetWalMode(SqliteConnection connection)
 		{
 			await Task.Run(() =>
@@ -107,7 +117,7 @@ namespace MauiApp1
 				}
 			});
 		}
-		
+
 		//Merge the wal file and main database file.
 		//Closes wal mode
 		private async Task CloseWalModeAndSaveChanges(SqliteConnection connection)
@@ -127,9 +137,12 @@ namespace MauiApp1
 		}
 
 		//Closes wal mode without merging the wal file and main database file.
-		private async Task ColseWalModeAndNotSaveChanges(SqliteConnection connection) {
-			await Task.Run(() => {
-				using (var command = connection.CreateCommand()) {
+		private async Task ColseWalModeAndNotSaveChanges(SqliteConnection connection)
+		{
+			await Task.Run(() =>
+			{
+				using (var command = connection.CreateCommand())
+				{
 					command.CommandText = "PRAGMA journal_mode=DELETE;";
 					command.ExecuteNonQuery();
 				}
@@ -137,18 +150,21 @@ namespace MauiApp1
 		}
 
 		//Closes connection to a database
-		private void CloseConnection(SqliteConnection connection) {
+		private void CloseConnection(SqliteConnection connection)
+		{
 			connection.Close();
-			if(connection.State == System.Data.ConnectionState.Closed) {
+			if (connection.State == System.Data.ConnectionState.Closed)
+			{
 				Console.WriteLine("Close");
 			}
 		}
 
 		//Test method to add a table to a database
-		private async Task TestEdditDatabase() {
+		private async Task TestEdditDatabase()
+		{
 			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
 			using (var connection = OpenConnection(mainDatabase))
-    		{
+			{
 				var command = connection.CreateCommand();
 				command.CommandText = @"CREATE TABLE IF NOT EXISTS MyTable (
 										Id INTEGER PRIMARY KEY,
@@ -165,14 +181,16 @@ namespace MauiApp1
 				{
 					Console.WriteLine($"Failed to create/check table 'MyTable': {ex.Message}");
 				}
-				finally {
+				finally
+				{
 					CloseConnection(connection);
 				}
 			}
 		}
 
 		//Delete a file
-		private void DelteFile() {
+		private void DelteFile()
+		{
 
 			string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
 			string destinationFile = Path.GetFullPath(destinationPath);
@@ -180,12 +198,14 @@ namespace MauiApp1
 		}
 
 		//Return the path to the main database file
-		internal string GetPathToDatabase() {
+		internal string GetPathToDatabase()
+		{
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\Database";
 		}
 
 		//Return the path to the copy database file
-		public string GetPathToCopyDatabase() {
+		public string GetPathToCopyDatabase()
+		{
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\DatabaseTempFiles";
 		}
 
@@ -196,22 +216,22 @@ namespace MauiApp1
 
 
 
-        // Get the path to the database based on the platform
+		// Get the path to the database based on the platform
 		// 
-        public string GetPath()
-        {
-            var currentPlatform = DeviceInfo.Platform;
-            string sqlitedbpath = "";
-            if (currentPlatform == DevicePlatform.iOS)
-            {
-                //sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
-            }
-            else if (currentPlatform == DevicePlatform.Android)
-            {
-                //sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
-            }
-            else
-            {
+		public string GetPath()
+		{
+			var currentPlatform = DeviceInfo.Platform;
+			string sqlitedbpath = "";
+			if (currentPlatform == DevicePlatform.iOS)
+			{
+				//sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
+			}
+			else if (currentPlatform == DevicePlatform.Android)
+			{
+				//sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
+			}
+			else
+			{
 				string rootPath = @"C:\"; // Starting directory
 				string searchPattern = dbFileName; // The name of the file to search for
 
@@ -223,45 +243,45 @@ namespace MauiApp1
 				{
 					Console.WriteLine(file);
 				}
-            }
-            Console.WriteLine(sqlitedbpath);
-            return sqlitedbpath;
-        }
-			 private void SearchFiles(string path, string searchPattern, List<string> foundFiles)
-    {
-        try
-        {
-            // Get all files in the current directory
-            string[] files = Directory.GetFiles(path, searchPattern);
-            foundFiles.AddRange(files);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            Console.WriteLine($"No access to {path}, skipping...");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred accessing {path}: {ex.Message}");
-        }
+			}
+			Console.WriteLine(sqlitedbpath);
+			return sqlitedbpath;
+		}
+		private void SearchFiles(string path, string searchPattern, List<string> foundFiles)
+		{
+			try
+			{
+				// Get all files in the current directory
+				string[] files = Directory.GetFiles(path, searchPattern);
+				foundFiles.AddRange(files);
+			}
+			catch (UnauthorizedAccessException)
+			{
+				Console.WriteLine($"No access to {path}, skipping...");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"An error occurred accessing {path}: {ex.Message}");
+			}
 
-        try
-        {
-            // Get all subdirectories in the current directory
-            string[] directories = Directory.GetDirectories(path);
-            foreach (string directory in directories)
-            {
-                SearchFiles(directory, searchPattern, foundFiles);
-            }
-        }
-        catch (UnauthorizedAccessException)
-        {
-            Console.WriteLine($"No access to subdirectories in {path}, skipping...");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred accessing subdirectories in {path}: {ex.Message}");
-        }
-    }
-		
-    }
+			try
+			{
+				// Get all subdirectories in the current directory
+				string[] directories = Directory.GetDirectories(path);
+				foreach (string directory in directories)
+				{
+					SearchFiles(directory, searchPattern, foundFiles);
+				}
+			}
+			catch (UnauthorizedAccessException)
+			{
+				Console.WriteLine($"No access to subdirectories in {path}, skipping...");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"An error occurred accessing subdirectories in {path}: {ex.Message}");
+			}
+		}
+
+	}
 }
