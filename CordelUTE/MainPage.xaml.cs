@@ -21,5 +21,12 @@ public partial class MainPage : ContentPage
 		ApiService apiService = new ApiService();
         await sQLService.ConfigureDatabase();
         await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
+		await ShowErrorMessage();
 	}
+
+	 // Method to show an error message
+    public async Task ShowErrorMessage()
+    {
+        await DisplayAlert("Error", "Error Sent", "OK");
+    }
 }
