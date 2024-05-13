@@ -16,17 +16,18 @@ public partial class MainPage : ContentPage
 		await Shell.Current.GoToAsync("//LoginPage");
 	}
 
-	public async void UploadFile(object sender, EventArgs e) {
+	public async void UploadFile(object sender, EventArgs e)
+	{
 		SQLService sQLService = new SQLService();
 		ApiService apiService = new ApiService();
-        await sQLService.ConfigureDatabase();
-        await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
+		await sQLService.ConfigureDatabase();
+		await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
 		await ShowErrorMessage();
 	}
 
-	 // Method to show an error message
-    public async Task ShowErrorMessage()
-    {
-        await DisplayAlert("Error", "Error Sent", "OK");
-    }
+	// Method to show an error message
+	public async Task ShowErrorMessage()
+	{
+		await DisplayAlert("Error", "Error Sent", "OK");
+	}
 }
