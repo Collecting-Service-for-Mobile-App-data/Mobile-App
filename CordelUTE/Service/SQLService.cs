@@ -5,14 +5,21 @@ using System.Runtime.CompilerServices;
 
 namespace MauiApp1
 {
+	/// <summary>
+	/// Class responsible for database operations.
+	/// </summary>
 	public class SQLService
 	{
 		public static string dbFileName = "database.db";
 
-		// Default constructor
+		/// <summary>
+		/// Default constructor for the SQLService class.
+		/// </summary>
 		public SQLService() { }
 
-		// Open and configure the database
+		/// <summary>
+		/// Opens and configures the database.
+		/// </summary>
 		public async Task ConfigureDatabase()
 		{
 			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
@@ -39,7 +46,9 @@ namespace MauiApp1
 			await ConfigCopyDatabase();
 		}
 
-		//Config the copy data to not be inn wal mode
+		/// <summary>
+		/// Configures the copy data to not be in WAL mode.
+		/// </summary>
 		private async Task ConfigCopyDatabase()
 		{
 			string copyDatabase = $"Data Source={GetPathToCopyDatabase()}\\database.db;Pooling=False";
@@ -58,10 +67,11 @@ namespace MauiApp1
 					CloseConnection(connection);
 				}
 			}
-
 		}
 
-		//Copy a database file
+		/// <summary>
+		/// Copies the database file.
+		/// </summary>
 		internal async Task CopyDatabase()
 		{
 			try
@@ -76,7 +86,11 @@ namespace MauiApp1
 			}
 		}
 
-		// Open the database connection
+		/// <summary>
+		/// Opens the database connection.
+		/// </summary>
+		/// <param name="connectionString">The connection string for the database.</param>
+		/// <returns>The opened SqliteConnection object.</returns>
 		private SqliteConnection OpenConnection(string connectionString)
 		{
 			Console.WriteLine(connectionString);
@@ -100,8 +114,10 @@ namespace MauiApp1
 			return connection;
 		}
 
-
-		// Set Write-Ahead Logging mode
+		/// <summary>
+		/// Sets Write-Ahead Logging mode.
+		/// </summary>
+		/// <param name="connection">The SqliteConnection object.</param>
 		private async Task SetWalMode(SqliteConnection connection)
 		{
 			await Task.Run(() =>
@@ -118,8 +134,10 @@ namespace MauiApp1
 			});
 		}
 
-		//Merge the wal file and main database file.
-		//Closes wal mode
+		/// <summary>
+		/// Merges the WAL file and main database file and closes WAL mode.
+		/// </summary>
+		/// <param name="connection">The SqliteConnection object.</param>
 		private async Task CloseWalModeAndSaveChanges(SqliteConnection connection)
 		{
 			await Task.Run(() =>
@@ -136,7 +154,10 @@ namespace MauiApp1
 			});
 		}
 
-		//Closes wal mode without merging the wal file and main database file.
+		/// <summary>
+		/// Closes WAL mode without merging the WAL file and main database file.
+		/// </summary>
+		/// <param name="connection">The SqliteConnection object.</param>
 		private async Task ColseWalModeAndNotSaveChanges(SqliteConnection connection)
 		{
 			await Task.Run(() =>
@@ -149,7 +170,10 @@ namespace MauiApp1
 			});
 		}
 
-		//Closes connection to a database
+		/// <summary>
+		/// Closes the connection to a database.
+		/// </summary>
+		/// <param name="connection">The SqliteConnection object.</param>
 		private void CloseConnection(SqliteConnection connection)
 		{
 			connection.Close();
@@ -159,7 +183,9 @@ namespace MauiApp1
 			}
 		}
 
-		//Test method to add a table to a database
+		/// <summary>
+		/// Test method to add a table to a database.
+		/// </summary>
 		private async Task TestEdditDatabase()
 		{
 			string mainDatabase = $"Data Source={GetPathToDatabase()}\\database.db;Pooling=False";
@@ -167,10 +193,10 @@ namespace MauiApp1
 			{
 				var command = connection.CreateCommand();
 				command.CommandText = @"CREATE TABLE IF NOT EXISTS MyTable (
-										Id INTEGER PRIMARY KEY,
-										Name TEXT NOT NULL,
-										Email TEXT NOT NULL
-									);";
+                                        Id INTEGER PRIMARY KEY,
+                                        Name TEXT NOT NULL,
+                                        Email TEXT NOT NULL
+                                    );";
 
 				try
 				{
@@ -188,47 +214,49 @@ namespace MauiApp1
 			}
 		}
 
-		//Delete a file
+		/// <summary>
+		/// Deletes a file.
+		/// </summary>
 		private void DelteFile()
 		{
-
 			string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
 			string destinationFile = Path.GetFullPath(destinationPath);
 			File.Delete(destinationFile);
 		}
 
-		//Return the path to the main database file
+		/// <summary>
+		/// Returns the path to the main database file.
+		/// </summary>
+		/// <returns>The path to the main database file.</returns>
 		internal string GetPathToDatabase()
 		{
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\Database";
 		}
 
-		//Return the path to the copy database file
+		/// <summary>
+		/// Returns the path to the copy database file.
+		/// </summary>
+		/// <returns>The path to the copy database file.</returns>
 		public string GetPathToCopyDatabase()
 		{
 			return Directory.GetCurrentDirectory() + "\\CordelUTE\\DatabaseTempFiles";
 		}
 
-
-
-
-
-
-
-
-		// Get the path to the database based on the platform
-		// 
+		/// <summary>
+		/// Gets the path to the database based on the platform.
+		/// </summary>
+		/// <returns>The path to the database file.</returns>
 		public string GetPath()
 		{
 			var currentPlatform = DeviceInfo.Platform;
 			string sqlitedbpath = "";
 			if (currentPlatform == DevicePlatform.iOS)
 			{
-				//sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
+				// sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
 			}
 			else if (currentPlatform == DevicePlatform.Android)
 			{
-				//sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
+				// sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
 			}
 			else
 			{
@@ -247,6 +275,13 @@ namespace MauiApp1
 			Console.WriteLine(sqlitedbpath);
 			return sqlitedbpath;
 		}
+
+		/// <summary>
+		/// Recursively searches for files in a directory and its subdirectories.
+		/// </summary>
+		/// <param name="path">The starting directory.</param>
+		/// <param name="searchPattern">The search pattern for file names.</param>
+		/// <param name="foundFiles">The list to store found file paths.</param>
 		private void SearchFiles(string path, string searchPattern, List<string> foundFiles)
 		{
 			try
@@ -282,6 +317,5 @@ namespace MauiApp1
 				Console.WriteLine($"An error occurred accessing subdirectories in {path}: {ex.Message}");
 			}
 		}
-
 	}
 }

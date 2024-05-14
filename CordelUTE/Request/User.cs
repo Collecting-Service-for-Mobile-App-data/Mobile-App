@@ -1,14 +1,23 @@
-namespace MauiApp1;
-
-// Represents a user entity within the application.
-public class UserRequest
+namespace MauiApp1
 {
-	// The unique identifier for the user.
-	public required long id { get; set; }
+    /// <summary>
+    /// Represents a user entity within the application.
+    /// </summary>
+    public class UserRequest
+    {
+        /// <summary>
+        /// The unique identifier for the user.
+        /// </summary>
+        public required long id { get; set; }
 
-	// The email address of the user.
-	public required string email { get; set; }
+        /// <summary>
+        /// The email address of the user.
+        /// </summary>
+        public required string email { get; set; }
 
-	// The unique identifier of the company the user belongs to.
-	public required long companyId { get; set; }
+        /// <summary>
+        /// The unique identifier of the company the user belongs to.
+        /// </summary>
+        public required long companyId { get; set; }
+    }
 }

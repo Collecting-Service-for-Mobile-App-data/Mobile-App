@@ -1,11 +1,18 @@
-namespace MauiApp1;
-
-// Represents a company entity within the application.
-public class CompanyRequest
+namespace MauiApp1
 {
-	// Gets or sets the unique identifier of the company.
-	public required int id { get; set; }
+    /// <summary>
+    /// Represents a company entity within the application.
+    /// </summary>
+    public class CompanyRequest
+    {
+        /// <summary>
+        /// Gets or sets the unique identifier of the company.
+        /// </summary>
+        public required int id { get; set; }
 
-	// Gets or sets the name of the company.
-	public required string name { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the company.
+        /// </summary>
+        public required string name { get; set; }
+    }
 }

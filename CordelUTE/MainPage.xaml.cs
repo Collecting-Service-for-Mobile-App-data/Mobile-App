@@ -1,33 +1,55 @@
-﻿namespace CordelUTE;
-using Microsoft.Maui.Controls;
-using MauiApp1;
-using System;
-
-public partial class MainPage : ContentPage
+﻿namespace CordelUTE
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    using Microsoft.Maui.Controls;
+    using MauiApp1;
+    using System;
 
-	private async void GoToLoginClicked(object sender, EventArgs e)
-	{
-		// Use absolute routing for Shell navigation
-		await Shell.Current.GoToAsync("//LoginPage");
-	}
+    /// <summary>
+    /// Represents the main page of the application.
+    /// </summary>
+    public partial class MainPage : ContentPage
+    {
+        /// <summary>
+        /// Default constructor for the MainPage class. This constructor
+        /// is called automatically when the MainPage component is created.
+        /// </summary>
+        public MainPage()
+        {
+            InitializeComponent();
+        }
 
-	public async void UploadFile(object sender, EventArgs e)
-	{
-		SQLService sQLService = new SQLService();
-		ApiService apiService = new ApiService();
-		await sQLService.ConfigureDatabase();
-		await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
-		await ShowErrorMessage();
-	}
+        /// <summary>
+        /// Handles the event when the "Go to Login" button is clicked. Navigates to the login page.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private async void GoToLoginClicked(object sender, EventArgs e)
+        {
+            // Use absolute routing for Shell navigation
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
 
-	// Method to show an error message
-	public async Task ShowErrorMessage()
-	{
-		await DisplayAlert("Error", "Error Sent", "OK");
-	}
+        /// <summary>
+        /// Handles the event when the upload file button is clicked. Configures the database and uploads the file.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        public async void UploadFile(object sender, EventArgs e)
+        {
+            SQLService sQLService = new SQLService();
+            ApiService apiService = new ApiService();
+            await sQLService.ConfigureDatabase();
+            await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
+            await ShowErrorMessage();
+        }
+
+        /// <summary>
+        /// Shows an error message using a display alert.
+        /// </summary>
+        /// <returns>A Task representing the asynchronous operation.</returns>
+        public async Task ShowErrorMessage()
+        {
+            await DisplayAlert("Error", "Error Sent", "OK");
+        }
+    }
 }
