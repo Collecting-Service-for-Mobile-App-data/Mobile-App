@@ -125,7 +125,7 @@ public class ApiService
     }
 
     // Retrieves user information based on the stored user ID.
-    private async Task<User> getUser()
+    private async Task<UserRequest> getUser()
     {
         // Retrieve the JWT token from secure storage.
         var jwtToken = await SecureStorage.Default.GetAsync("jwt");
@@ -148,7 +148,7 @@ public class ApiService
             var jsonObject = JsonDocument.Parse(jsonResponse).RootElement;
 
             // Create a new User object and populate its properties from the JSON data.
-            var user = new User
+            var user = new UserRequest
             {
                 id = jsonObject.GetProperty("id").GetInt64(),
                 email = jsonObject.GetProperty("email").GetString(),
@@ -185,9 +185,9 @@ public class ApiService
     }
 
     // Retrieves a list of companies from the backend API.
-    public async Task<List<Company>> GetCompaniesAsync()
+    public async Task<List<CompanyRequest>> GetCompaniesAsync()
     {
-        var companies = new List<Company>();
+        var companies = new List<CompanyRequest>();
         try
         {
             // Send a GET request to the API endpoint for retrieving companies.
@@ -199,7 +199,7 @@ public class ApiService
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 // Deserialize the JSON response into a list of Company objects.
-                companies = JsonSerializer.Deserialize<List<Company>>(responseContent);
+                companies = JsonSerializer.Deserialize<List<CompanyRequest>>(responseContent);
             }
             else
             {

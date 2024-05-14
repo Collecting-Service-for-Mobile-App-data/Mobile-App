@@ -1,7 +1,7 @@
 namespace MauiApp1;
 
 // Represents a user entity within the application.
-public class User
+public class UserRequest
 {
 	// The unique identifier for the user.
 	public required long id { get; set; }

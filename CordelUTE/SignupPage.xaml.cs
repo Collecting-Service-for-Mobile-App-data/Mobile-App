@@ -7,9 +7,9 @@ namespace CordelUTE
     {
         private ApiService _apiService = new ApiService();
 
-        private List<Company> companies = new List<Company>();
+        private List<CompanyRequest> companies = new List<CompanyRequest>();
 
-        private Company SelectedCompany;
+        private CompanyRequest SelectedCompany;
         public SignupPage()
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace CordelUTE
                 email = EmailEntry.Text,
                 password = PasswordEntry.Text,
 
-                
+
             };
 
             // Assuming _apiService.SignupAsync(signupRequest) exists and works similarly to LoginAsync
@@ -74,7 +74,7 @@ namespace CordelUTE
 
         private void CompanyListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is Company selectedCompany)
+            if (e.SelectedItem is CompanyRequest selectedCompany)
             {
                 CompanyEntry.Text = selectedCompany.name;
                 SelectedCompany = selectedCompany;

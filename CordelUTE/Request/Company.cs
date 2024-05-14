@@ -1,7 +1,7 @@
 namespace MauiApp1;
 
 // Represents a company entity within the application.
-public class Company
+public class CompanyRequest
 {
 	// Gets or sets the unique identifier of the company.
 	public required int id { get; set; }
