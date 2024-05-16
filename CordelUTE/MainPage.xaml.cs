@@ -40,6 +40,7 @@
             ApiService apiService = new ApiService();
             await sQLService.ConfigureDatabase();
             await apiService.UploadFileAsync(sQLService.GetPathToCopyDatabase() + "\\database.db");
+            DeleteFile();
             await ShowErrorMessage();
         }
 
@@ -51,5 +52,15 @@
         {
             await DisplayAlert("Error", "Error Sent", "OK");
         }
+
+        /// <summary>
+		/// Deletes a file.
+		/// </summary>
+		private void DeleteFile()
+		{
+			string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
+			string destinationFile = Path.GetFullPath(destinationPath);
+			File.Delete(destinationFile);
+		}
     }
 }

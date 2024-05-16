@@ -43,6 +43,8 @@
         <!-- Confirm Password entry -->
         <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
 
+        <Label x:Name="SignupErrorMessageLabel" TextColor="Red" HorizontalOptions="Center" IsVisible="False" />
+
         <!-- Sign up button -->
         <Button x:Name="SignupButton" Text="SIGN UP" BackgroundColor="Orange" TextColor="White"
             CornerRadius="10" Clicked="OnSignupButtonClicked" />

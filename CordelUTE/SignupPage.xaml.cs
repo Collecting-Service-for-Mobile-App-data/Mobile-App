@@ -40,24 +40,28 @@ namespace CordelUTE
                 string.IsNullOrWhiteSpace(PasswordEntry.Text) ||
                 PasswordEntry.Text != ConfirmPasswordEntry.Text)
             {
-                await DisplayAlert("Validation Failed", "Please check your inputs and try again.", "OK");
+                SignupErrorMessageLabel.Text = "Please check your inputs and try again.";
+                SignupErrorMessageLabel.IsVisible = true;
                 return;
             }
+
             var signupRequest = new SignupRequest
             {
                 company = SelectedCompany,
                 email = EmailEntry.Text,
                 password = PasswordEntry.Text,
             };
-            var isSuccess = await _apiService.SignupAsync(signupRequest);
+            var (isSuccess, errorMessage) = await _apiService.SignupAsync(signupRequest);
             if (isSuccess)
             {
+                SignupErrorMessageLabel.IsVisible = false;
                 await DisplayAlert("Success", "Signup successful.", "OK");
                 await Shell.Current.GoToAsync("//LoginPage");
             }
             else
             {
-                await DisplayAlert("Error", "Signup failed. Please try again.", "OK");
+                SignupErrorMessageLabel.Text = errorMessage;
+                SignupErrorMessageLabel.IsVisible = true;
             }
         }
 

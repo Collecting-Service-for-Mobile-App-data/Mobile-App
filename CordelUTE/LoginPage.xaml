@@ -24,6 +24,10 @@
         <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True"
             Text="{Binding Password}" />
 
+        <!-- Error Message Label -->
+        <Label x:Name="ErrorMessageLabel" TextColor="Red" HorizontalOptions="Center" IsVisible="False" />
+
+
         <!-- Forgot password -->
         <Label Text="Forgot password?" HorizontalOptions="End" TextColor="Gray" />
 

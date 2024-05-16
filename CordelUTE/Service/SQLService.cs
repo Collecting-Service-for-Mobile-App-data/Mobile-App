@@ -215,16 +215,6 @@ namespace MauiApp1
 		}
 
 		/// <summary>
-		/// Deletes a file.
-		/// </summary>
-		private void DelteFile()
-		{
-			string destinationPath = "../Mobile-App\\CordelUTE\\DatabaseTempFiles/database.db";
-			string destinationFile = Path.GetFullPath(destinationPath);
-			File.Delete(destinationFile);
-		}
-
-		/// <summary>
 		/// Returns the path to the main database file.
 		/// </summary>
 		/// <returns>The path to the main database file.</returns>

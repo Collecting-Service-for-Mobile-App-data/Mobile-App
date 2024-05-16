@@ -34,14 +34,15 @@ namespace CordelUTE
             var (isLogIn, errorMessage) = await _apiService.LoginAsync(loginRequest);
             if (isLogIn)
             {
+                ErrorMessageLabel.IsVisible = false;
                 await Shell.Current.GoToAsync("//MainPage");
                 await _apiService.StoreUserId();
                 Console.WriteLine(SecureStorage.Default.GetAsync("useId").ToString());
             }
             else
             {
-                Console.WriteLine(errorMessage);
-                await DisplayAlert("Login Failed", "Please check your credentials and try again.", "OK");
+                ErrorMessageLabel.Text = errorMessage;
+                ErrorMessageLabel.IsVisible = true;
             }
         }
 

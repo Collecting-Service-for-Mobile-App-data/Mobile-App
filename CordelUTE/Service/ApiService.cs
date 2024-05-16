@@ -17,7 +17,7 @@ public class ApiService
     public ApiService()
     {
         _httpClient = new HttpClient();
-        _baseUrl = "http://localhost:8080";
+        _baseUrl = "http://129.241.153.179:8080";
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class ApiService
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var parsedJson = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
             var token = parsedJson["jwt"];
-            //await SecureStorage.Default.SetAsync("jwt", token);
+            await SecureStorage.Default.SetAsync("jwt", token);
             return (true, null);
         }
         else
@@ -137,22 +137,30 @@ public class ApiService
     /// </summary>
     /// <param name="request">The signup request object.</param>
     /// <returns>A boolean indicating if the signup was successful.</returns>
-    public async Task<bool> SignupAsync(SignupRequest request)
+    public async Task<(bool isSuccess, string errorMessage)> SignupAsync(SignupRequest request)
     {
         try
         {
             var jsonRequest = JsonSerializer.Serialize(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{_baseUrl}/api/user", content);
-
-            return response.IsSuccessStatusCode;
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return (false, errorMessage);
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"An exception occurred during signup: {ex.Message}");
-            return false;
+            return (false, $"An error occurred: {ex.Message}");
         }
     }
+
 
     /// <summary>
     /// Retrieves a list of companies from the backend API.
@@ -179,7 +187,7 @@ public class ApiService
         {
             Console.WriteLine($"Error retrieving companies: {e}");
         }
-
+        Console.WriteLine(companies);
         return companies;
     }
 }
