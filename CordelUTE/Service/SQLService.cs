@@ -242,16 +242,16 @@ namespace MauiApp1
 			string sqlitedbpath = "";
 			if (currentPlatform == DevicePlatform.iOS)
 			{
-				// sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
+				sqlitedbpath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", dbFileName);
 			}
 			else if (currentPlatform == DevicePlatform.Android)
 			{
-				// sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
+				sqlitedbpath = Path.Combine(FileSystem.AppDataDirectory, dbFileName);
 			}
 			else
 			{
-				string rootPath = @"C:\"; // Starting directory
-				string searchPattern = dbFileName; // The name of the file to search for
+				string rootPath = @"C:\";
+				string searchPattern = dbFileName;
 
 				List<string> foundFiles = new List<string>();
 				SearchFiles(rootPath, searchPattern, foundFiles);
