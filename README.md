@@ -6,6 +6,8 @@ Welcome to the Cordel Mobile App repository, a part of a bachelor project in Com
 
 The Cordel Mobile App is designed to facilitate error reporting by allowing users to send error logs directly from their mobile devices. The error logs, in the form of raw SQL files, are transmitted to the Cordel developers' admin website. Developers can then access and download these files to diagnose the reported issues, making the troubleshooting process efficient and user-centric.
 
+
+
 ## Project Structure
 
 ```
@@ -58,6 +60,9 @@ CordelUTE/
 
 ## Installation and Setup
 To get a local copy up and running, follow these steps:
+
+### Mac info
+To access the storage and running the app on ios an apple developer account is neccasry. Wihtout this you will not be able to login or send errors. This will not be a problem if the app is deployed to app store.
 
 ### Clone the repository:
 - git clone https://github.com/yourusername/cordel-mobile-app.git
